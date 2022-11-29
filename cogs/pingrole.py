@@ -1,16 +1,8 @@
 import deta
-import aiohttp
 import discohook as dh
 from utils.db import db
 
 
-async def fetch_channel(channel_id: str) -> dict:
-    url = f"https://aiotube.deta.dev/channel/{channel_id}/info"
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            if resp.status == 200:
-                return await resp.json()
-    
 
 class Pingrole(dh.Cog):
     
@@ -21,7 +13,7 @@ class Pingrole(dh.Cog):
         permissions=[dh.Permissions.manage_guild],
         dm_access=False,
     )
-    async def subscribe(self, i: dh.Interaction, role: dh.Role):
+    async def pingrole(self, i: dh.Interaction, role: dh.Role):
         updater = deta.Updater()
         updater.set("pingrole", role.id)
         await db.update(i.guild_id, updater)
