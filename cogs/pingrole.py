@@ -3,7 +3,6 @@ import discohook as dh
 from utils.db import db
 
 
-
 class Pingrole(dh.Cog):
     
     @dh.Cog.command(
