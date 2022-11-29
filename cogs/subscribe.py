@@ -72,6 +72,5 @@ class Subscribe(dh.Cog):
         return await i.command.response(embed=emd, ephemeral=True)
         
 
-
 def setup(app: dh.Client):
     app.add_cog(Subscribe())

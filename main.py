@@ -13,4 +13,7 @@ cogs = [
     if script.endswith(".py")
 ]
 for cog in cogs:
-    app.load_cog(cog)
+    try:
+        app.load_cog(cog)
+    except:
+        pass

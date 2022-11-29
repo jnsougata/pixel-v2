@@ -22,7 +22,7 @@ class Unsubscribe(dh.Cog):
         dm_access=False,
     )
     async def unsubscribe(self, i: dh.Interaction):
-        record = await db.get(i.guild_id)
+        record = (await db.get(i.guild_id))[0]
         if not record.get("channels"):
             return await i.command.response("No channels subscribed", ephemeral=True)
         channel_ids = list(record["channels"].keys())
@@ -31,10 +31,9 @@ class Unsubscribe(dh.Cog):
 
         channel_menu = dh.SelectMenu(
             dh.SelectMenuType.text, 
-            placeholder="select a channel(s) from list",
-            max_values=10,
-            min_values=1,
-            options=[dh.SelectOption(channel["name"], channel["id"]) for channel in channels]
+            placeholder="select channel(s) from list",
+            options=[dh.SelectOption(channel["name"], channel["id"]) for channel in channels],
+            max_values=len(channels),
         )
         @channel_menu.on_selection
         async def channel_menu_selection(i: dh.Interaction, values: list):
@@ -42,12 +41,12 @@ class Unsubscribe(dh.Cog):
             for value in values:
                 updater.delete(f"channels.{value}")
             await db.update(i.guild_id, updater)
-            await i.command.response("✅ Unsubscribed from selected channels", ephemeral=True)
+            return await i.command.response("✅ Unsubscribed from selected channels", ephemeral=True)
         
         view = dh.View()
         view.add_select_menu(channel_menu)
-        return await i.command.response(components=view)
+        return await i.command.response(components=view, ephemeral=True)
 
-        
+
 def setup(app: dh.Client):
     app.add_cog(Unsubscribe())
