@@ -1,0 +1,5 @@
+.deta/
+.env
+.idea/
+.vscode/
+venv/
