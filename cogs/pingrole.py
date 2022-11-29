@@ -13,10 +13,13 @@ class Pingrole(dh.Cog):
         dm_access=False,
     )
     async def pingrole(self, i: dh.Interaction, role: dh.Role):
+        if role.managed:
+            return await i.command.response("⚠️ Role must be a guild role", ephemeral=True)
         updater = deta.Updater()
         updater.set("pingrole", role.id)
         await db.update(i.guild_id, updater)
-        emd = dh.Embed(description=f'✅ Pingrole {role.mention} added Successfully', color=0xc4302b)
+        mention = role.mention if role.position != 0 else '@everyone'
+        emd = dh.Embed(description=f'✅ {mention} added successfully as pingrole', color=0xc4302b)
         return await i.command.response(embed=emd, ephemeral=True)
         
 
