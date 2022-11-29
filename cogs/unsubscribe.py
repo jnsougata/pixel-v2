@@ -28,12 +28,12 @@ class Unsubscribe(dh.Cog):
         channel_ids = list(record["channels"].keys())
         tasks = [fetch_channel(channel_id) for channel_id in channel_ids]
         channels = await asyncio.gather(*tasks)
-
+        valids = [channel for channel in channels if channel]
         channel_menu = dh.SelectMenu(
             dh.SelectMenuType.text, 
             placeholder="select channel(s) from list",
-            options=[dh.SelectOption(channel["name"], channel["id"]) for channel in channels],
-            max_values=len(channels),
+            options=[dh.SelectOption(channel["name"], channel["id"]) for channel in valids],
+            max_values=len(valids),
         )
         @channel_menu.on_selection
         async def channel_menu_selection(i: dh.Interaction, values: list):
