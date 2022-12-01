@@ -20,7 +20,7 @@ class Pingrole(dh.Cog):
         await db.update(i.guild_id, updater)
         mention = role.mention if role.position != 0 else '@everyone'
         emd = dh.Embed(description=f'✅ {mention} added successfully as pingrole', color=0xc4302b)
-        return await i.command.response(embed=emd, ephemeral=True)
+        await i.command.response(embed=emd, ephemeral=True)
         
 
 def setup(app: dh.Client):

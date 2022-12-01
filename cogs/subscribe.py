@@ -69,7 +69,7 @@ class Subscribe(dh.Cog):
         )
         emd.thumbnail(channel_info["avatar"])
         emd.image(channel_info["banner"])
-        return await i.command.response(embed=emd, ephemeral=True)
+        await i.command.response(embed=emd, ephemeral=True)
         
 
 def setup(app: dh.Client):
