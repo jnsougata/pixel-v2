@@ -29,6 +29,7 @@ async def fetch_channel(channel_id: str) -> dict:
 class Subscribe(dh.Cog):
     
     @dh.Cog.command(
+        id="1034890687050686494",
         name="subscribe",
         description="subscribe to a youtube feed",
         options=[

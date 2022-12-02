@@ -16,6 +16,7 @@ async def fetch_channel(channel_id: str) -> dict:
 class Unsubscribe(dh.Cog):
     
     @dh.Cog.command(
+        id="1047213737930657802",
         name="unsubscribe",
         description="unsubscribe from a youtube feed",
         permissions=[dh.Permissions.manage_guild],

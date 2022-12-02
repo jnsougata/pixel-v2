@@ -6,6 +6,7 @@ from utils.db import db
 class Pingrole(dh.Cog):
     
     @dh.Cog.command(
+        id="1047273274519855176",
         name="pingrole",
         description="set the role to ping with youtube feeds",
         options=[dh.RoleOption("role", "the role to ping", required=True)],

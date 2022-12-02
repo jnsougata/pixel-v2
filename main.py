@@ -7,7 +7,9 @@ app = dh.Client(
     public_key=os.getenv("PUBLIC_KEY"),
     token=os.getenv("DISCORD_TOKEN"),
     log_channel_id=902228501120290866,
+    static=True,
 )
+
 
 @app.on_error
 async def on_error(e: Exception, data: dict):
@@ -17,14 +19,10 @@ async def on_error(e: Exception, data: dict):
         description=f'```py\n{err}\n```\n```py\n{data}\n```', 
         color=0xff0000
     )
-    await app.send_message(902228501120290866, {'embeds': [embed.json()]})
+    await app.send_message(app.log_channel_id, {'embeds': [embed.json()]})
 
 cogs = [
     f"cogs.{script[:-3]}" for script in os.listdir("cogs") 
     if script.endswith(".py")
 ]
-for cog in cogs:
-    try:
-        app.load_cog(cog)
-    except:
-        pass
+app.load_cogs(*cogs)
