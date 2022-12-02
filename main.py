@@ -7,7 +7,6 @@ app = dh.Client(
     public_key=os.getenv("PUBLIC_KEY"),
     token=os.getenv("DISCORD_TOKEN"),
     log_channel_id=902228501120290866,
-    static=True,
 )
 
 
