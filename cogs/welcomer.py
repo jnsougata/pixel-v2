@@ -17,14 +17,17 @@ class Welcomer(dh.Cog):
         dm_access=False,
     )
     async def welcomer(self, i: dh.Interaction, channel: dh.Channel, image: dh.Attachment = None):
+        await i.defer(ephemeral=True)
         updater = deta.Updater()
         updater.set("welcomer", channel.id)
         await db.update(i.guild_id, updater)
         if image:
-            await drive.put(await image.read(), f"{i.guild_id}_welcomer.png", folder="welcomer")
-            await i.command.response(f'✅ Welcomer bound to {channel.mention} with following [Image]({image.url})', ephemeral=True)
+            await drive.put(await image.read(), save_as=f"{i.guild_id}.png", folder="welcomer")
+            embed = dh.Embed(description=f'✅ Welcomer bound to {channel.mention} with following Image')
+            embed.image(url=image.url)
+            await i.follow_up(embed=embed, ephemeral=True)
         else:
-            await i.command.response(f'✅ Welcomer bound to {channel.mention}', ephemeral=True)
+            await i.follow_up(f'✅ Welcomer bound to {channel.mention}', ephemeral=True)
 
 def setup(app: dh.Client):
     app.add_cog(Welcomer())

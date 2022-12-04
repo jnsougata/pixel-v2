@@ -11,11 +11,11 @@ app = dh.Client(
 
 
 @app.on_error
-async def on_error(e: Exception, data: dict):
+async def on_error(e: Exception, _: dict):
     err = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
     embed = dh.Embed(
         title='Stack Trace', 
-        description=f'```py\n{err}\n```\n```py\n{data}\n```', 
+        description=f'```py\n{err}\n```', 
         color=0xff0000
     )
     await app.send_message(app.log_channel_id, {'embeds': [embed.json()]})
