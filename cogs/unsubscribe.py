@@ -22,10 +22,11 @@ class Unsubscribe(dh.Cog):
         permissions=[dh.Permissions.manage_guild],
         dm_access=False,
     )
-    async def unsubscribe(self, i: dh.Interaction):
+    async def unsubscribe(self, i: dh.CommandInteraction):
         record = (await db.get(i.guild_id))[0]
         if not record.get("channels"):
-            return await i.command.response("No channels subscribed", ephemeral=True)
+            return await i.response("No channels subscribed", ephemeral=True)
+        await i.defer(ephemeral=True)
         channel_ids = list(record["channels"].keys())
         tasks = [fetch_channel(channel_id) for channel_id in channel_ids]
         channels = await asyncio.gather(*tasks)
@@ -35,17 +36,17 @@ class Unsubscribe(dh.Cog):
             max_values=len(valids),
             placeholder="select channel(s) from list",
         )
-        @channel_menu.on_selection
-        async def channel_menu_selection(i: dh.Interaction, values: list):
+        @channel_menu.onselection
+        async def channel_menu_selection(i: dh.ComponentInteraction, values: list):
             updater = deta.Updater()
             for value in values:
                 updater.delete(f"channels.{value}")
             await db.update(i.guild_id, updater)
-            return await i.command.response("✅ Unsubscribed from selected channels", ephemeral=True)
+            await i.edit_original("✅ Unsubscribed from selected channels", view=None, embed=None)
         
         view = dh.View()
         view.add_select_menu(channel_menu)
-        await i.command.response(components=view, ephemeral=True)
+        await i.follow_up(view=view)
 
 
 def setup(app: dh.Client):

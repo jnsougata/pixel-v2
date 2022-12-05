@@ -44,10 +44,11 @@ class Subscribe(dh.Cog):
         permissions=[dh.Permissions.manage_guild],
         dm_access=False,
     )
-    async def subscribe(self, i: dh.Interaction, url: str, channel: dh.Channel):
+    async def subscribe(self, i: dh.CommandInteraction, url: str, channel: dh.Channel):
         channel_info = await fetch_channel(form_id(url))
         if not channel_info:
-            return await i.command.response("Invalid channel url", ephemeral=True)
+            return await i.response("Invalid channel url", ephemeral=True)
+        await i.defer(ephemeral=True)
         channel_id = channel_info["id"]
         updater = deta.Updater()
         updater.set(
@@ -70,8 +71,8 @@ class Subscribe(dh.Cog):
         )
         emd.thumbnail(channel_info["avatar"])
         emd.image(channel_info["banner"])
-        await i.command.response(embed=emd, ephemeral=True)
-        
+        await i.follow_up(embed=emd, ephemeral=True)
+
 
 def setup(app: dh.Client):
     app.add_cog(Subscribe())

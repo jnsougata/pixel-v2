@@ -16,7 +16,7 @@ class Welcomer(dh.Cog):
         permissions=[dh.Permissions.manage_guild],
         dm_access=False,
     )
-    async def welcomer(self, i: dh.Interaction, channel: dh.Channel, image: dh.Attachment = None):
+    async def welcomer(self, i: dh.CommandInteraction, channel: dh.Channel, image: dh.Attachment = None):
         await i.defer(ephemeral=True)
         updater = deta.Updater()
         updater.set("welcomer", channel.id)
